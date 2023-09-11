@@ -49,4 +49,7 @@ export const getPosts = () => {
 export const getUser = (id: number) => {
   return request(`${baseURL}users/${id}`, {})
 }
+export const getComments = (id: number) => {
+  return request(`${baseURL}comments?postId=${id}`, {})
+}
 

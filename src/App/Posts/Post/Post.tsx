@@ -4,21 +4,27 @@ import { FavoritesIcon } from "../../../images/icons/FavoritesIcon";
 import { DialogueIcon } from "../../../images/icons/DialogueIcon";
 import { Delete } from "../../../images/icons/Delete";
 import { EditIcon } from "../../../images/icons/EditIcon";
-import { getUser } from "../../../api/api";
+import { getComments, getUser } from "../../../api/api";
 import { TPost, TUser } from "../../../../types/types";
 
 const Post: FC<TPost> = ({ title, userId, body, id }) => {
   const [user, setUser] = useState<TUser>();
   const [checked, setChecked] = useState<boolean>(false);
+  const [comments, setComments] = useState<any[]>();
+  const [checkedComments, setCheckedComments] = useState<boolean>(false);
 
   useEffect(() => {
     userId && getUser(userId).then((res) => setUser(res));
   }, [userId]);
 
-  function chengeCheckbox() {
+  const chengeCheckbox = () => {
     setChecked(!checked);
-  }
-
+  };
+  const openComments = (e: any) => {
+    e.stopPropagation();
+    setCheckedComments(!checkedComments);
+    getComments(id).then((res) => setComments(res));
+  };
   return (
     <div
       className={checked ? `${styles.post} ${styles.postActive}` : styles.post}
@@ -38,18 +44,42 @@ const Post: FC<TPost> = ({ title, userId, body, id }) => {
       <div className={styles.footer}>
         <p className={styles.userName}>{user && user.name}</p>
         <div className={styles.buttons}>
-          <button className={styles.button}>
-            <DialogueIcon strokeDefault="rgb(0 126 255)" />
+          <button className={styles.button} onClick={(e) => openComments(e)}>
+            <DialogueIcon strokeDefault={checkedComments ? 'rgb(255 0 240)': 'rgb(0 126 255)'} />
           </button>
           <button className={styles.button}>
-            <Delete
-              strokeDefault="rgb(0 126 255)"
-              strokeHovered="rgb(0 126 255 / 40%);"
-            />
+            <Delete strokeDefault="rgb(0 126 255)" />
           </button>
           <button className={styles.button}>
             <EditIcon strokeDefault="rgb(0 126 255)" />
           </button>
+        </div>
+      </div>
+      <div
+        className={
+          checkedComments
+            ? `${styles.overlay} ${styles.overlayActive}`
+            : styles.overlay
+        }
+        onClick={(e) => openComments(e)}
+      >
+        <div
+          className={
+            checkedComments
+              ? `${styles.comments} ${styles.commentsActive}`
+              : styles.comments
+          }
+        >
+          {comments &&
+            comments.map((comment) => {
+              return (
+                <div className={styles.comment}>
+                  <h2 className={styles.name}>{comment.name}</h2>
+                  <p className={styles.email}>{comment.email}</p>
+                  <p className={styles.body}>{comment.body}</p>
+                </div>
+              );
+            })}
         </div>
       </div>
     </div>
