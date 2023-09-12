@@ -46,7 +46,6 @@
 }
 
 .description {
-  padding-right: 10px;
   grid-area: description;
   margin-top: 20px;
   font-size: 1rem;

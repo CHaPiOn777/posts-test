@@ -1,25 +1,28 @@
-import React, { useState, useEffect, FC } from "react";
+import { useState, FC } from "react";
 import styles from "./Post.module.css";
 import { FavoritesIcon } from "../../../images/icons/FavoritesIcon";
 import { DialogueIcon } from "../../../images/icons/DialogueIcon";
 import { Delete } from "../../../images/icons/Delete";
 import { EditIcon } from "../../../images/icons/EditIcon";
-import { getComments, getUser } from "../../../api/api";
-import { TPost, TUser } from "../../../../types/types";
+import { getComments } from "../../../api/api";
+import { TUser } from "../../../../types/types";
 
-const Post: FC<TPost> = ({ title, userId, body, id }) => {
-  const [user, setUser] = useState<TUser>();
+export type TPost = {
+  user: TUser[];
+  body: string;
+  id: number;
+  title: string;
+}
+const Post: FC<TPost> = ({ title, body, id, user }) => {
   const [checked, setChecked] = useState<boolean>(false);
   const [comments, setComments] = useState<any[]>();
   const [checkedComments, setCheckedComments] = useState<boolean>(false);
-
-  useEffect(() => {
-    userId && getUser(userId).then((res) => setUser(res));
-  }, [userId]);
-
+  const { name } = user[0];
+  console.log(comments)
   const chengeCheckbox = () => {
     setChecked(!checked);
   };
+
   const openComments = (e: any) => {
     e.stopPropagation();
     setCheckedComments(!checkedComments);
@@ -42,7 +45,7 @@ const Post: FC<TPost> = ({ title, userId, body, id }) => {
       </button>
       <p className={styles.description}>{body}</p>
       <div className={styles.footer}>
-        <p className={styles.userName}>{user && user.name}</p>
+        <p className={styles.userName}>{name}</p>
         <div className={styles.buttons}>
           <button className={styles.button} onClick={(e) => openComments(e)}>
             <DialogueIcon strokeDefault={checkedComments ? 'rgb(255 0 240)': 'rgb(0 126 255)'} />

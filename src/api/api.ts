@@ -1,7 +1,7 @@
 
 const API_KEY = '47f2b1ef72deea1bace6ab6e8d38c347c301201a';
 const countryURL = 'https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/country'
-const baseURL = `https://jsonplaceholder.typicode.com/`;
+export const baseURL = `https://jsonplaceholder.typicode.com/`;
 
 const convertURL = (from:string, to:string) => {
   return `https://api.exchangerate.host/convert?from=${from}&to=${to}`
