@@ -1,32 +1,36 @@
-import { useState, FC } from "react";
+import { useState, FC, useEffect } from "react";
 import styles from "./Post.module.css";
 import { FavoritesIcon } from "../../../images/icons/FavoritesIcon";
 import { DialogueIcon } from "../../../images/icons/DialogueIcon";
 import { Delete } from "../../../images/icons/Delete";
 import { EditIcon } from "../../../images/icons/EditIcon";
-import { getComments } from "../../../api/api";
-import { TUser } from "../../../../types/types";
+import { TComments, TUser } from "../../../../types/types";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import { fetchComments } from "../../../store/reducers/ActionCreater";
 
 export type TPost = {
   user: TUser[];
   body: string;
   id: number;
   title: string;
+  comments: TComments[];
 }
-const Post: FC<TPost> = ({ title, body, id, user }) => {
+const Post: FC<TPost> = ({ title, body, id, user, comments }) => {
+  const dispatch = useAppDispatch();
+  
   const [checked, setChecked] = useState<boolean>(false);
-  const [comments, setComments] = useState<any[]>();
+  // const [comments, setComments] = useState<any[]>();
   const [checkedComments, setCheckedComments] = useState<boolean>(false);
   const { name } = user[0];
-  console.log(comments)
   const chengeCheckbox = () => {
     setChecked(!checked);
   };
 
+  
   const openComments = (e: any) => {
     e.stopPropagation();
     setCheckedComments(!checkedComments);
-    getComments(id).then((res) => setComments(res));
+    
   };
   return (
     <div
@@ -74,12 +78,12 @@ const Post: FC<TPost> = ({ title, body, id, user }) => {
           }
         >
           {comments &&
-            comments.map((comment) => {
+            comments.map((item:any) => {
               return (
                 <div className={styles.comment}>
-                  <h2 className={styles.name}>{comment.name}</h2>
-                  <p className={styles.email}>{comment.email}</p>
-                  <p className={styles.body}>{comment.body}</p>
+                  <h2 className={styles.name}>{item.name}</h2>
+                  <p className={styles.email}>{item.email}</p>
+                  <p className={styles.body}>{item.body}</p>
                 </div>
               );
             })}

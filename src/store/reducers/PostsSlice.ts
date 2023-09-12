@@ -25,6 +25,7 @@ export const PostsSlice = createSlice({
       state.posts = action.payload;
       state.error = '';
     },
+
     postsFetchingError(state, action: PayloadAction<string>) {
       state.isLoading = false;
       state.error = action.payload;

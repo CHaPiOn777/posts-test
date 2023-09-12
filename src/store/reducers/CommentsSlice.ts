@@ -1,31 +1,31 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { TPost, TUser } from "../../../types/types"
+import { TComments } from "../../../types/types"
 
-type TPostState = {
-  posts: TPost[];
+type TCommentsState = {
+  comments: any;
   isLoading: boolean;
-  error: string
+  error: string;
 }
 
-const initialState: TPostState = {
-  posts: [],
+const initialState: TCommentsState = {
+  comments: [],
   isLoading: false,
-  error: '' 
+  error: '' ,
 }
 
 export const CommentsSlice = createSlice({
   name: 'post',
   initialState,
   reducers: {
-    postsFetching(state) {
+    commentsFetching(state) {
       state.isLoading = true;
     },
-    postsFetchingSuccess(state, action: PayloadAction<TPost[]>) {
+    commentsFetchingSuccess(state, action: PayloadAction<any>) {
       state.isLoading = false;
-      state.posts = action.payload;
+      state.comments = action.payload;
       state.error = '';
     },
-    postsFetchingError(state, action: PayloadAction<string>) {
+    commentsFetchingError(state, action: PayloadAction<string>) {
       state.isLoading = false;
       state.error = action.payload;
     },

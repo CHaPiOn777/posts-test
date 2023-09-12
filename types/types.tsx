@@ -10,12 +10,17 @@ export type TPost = {
   id: number;
   title: string;
   userId: number;
-
 };
-
 
 export type TUser = {
-  name: string,
-  id: number
+  name: string;
+  id: number;
 };
 
+export type TComments = {
+  body: string;
+  email: string;
+  name: string;
+  postId: string;
+  id: number;
+};

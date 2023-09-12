@@ -1,9 +1,10 @@
 import axios from "axios";
 import { AppDispatch } from "../store";
-import { TPost, TUser } from "../../../types/types";
+import { TComments, TPost, TUser } from "../../../types/types";
 import { baseURL } from "../../api/api";
 import { PostsSlice } from "./PostsSlice";
 import { UsersSlice } from "./UsersSlice";
+import { CommentsSlice } from "./CommentsSlice";
 
 export const fetchPosts = () => async (dispatch: AppDispatch) => {
   try {
@@ -22,5 +23,15 @@ export const fetchUsers = () => async (dispatch: AppDispatch) => {
     dispatch(UsersSlice.actions.usersFetchingSuccess(res.data));
   } catch (e) {
     dispatch(UsersSlice.actions.usersFetchingError('Произошла ошибка при загрузке пользователей'));
+  }
+}
+
+export const fetchComments = () => async (dispatch: AppDispatch) => {
+  try {
+    dispatch(CommentsSlice.actions.commentsFetching());
+    const res = await axios.get<TComments[]>(`${baseURL}comments`);
+    dispatch(CommentsSlice.actions.commentsFetchingSuccess(res.data));
+  } catch (e) {
+    dispatch(CommentsSlice.actions.commentsFetchingError('Произошла ошибка при загрузке пользователей'));
   }
 }
