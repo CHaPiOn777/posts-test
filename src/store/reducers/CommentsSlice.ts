@@ -14,7 +14,7 @@ const initialState: TCommentsState = {
 }
 
 export const CommentsSlice = createSlice({
-  name: 'post',
+  name: 'comments',
   initialState,
   reducers: {
     commentsFetching(state) {

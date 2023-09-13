@@ -11,7 +11,7 @@ const Posts = () => {
   const { posts, isLoading, error } = useAppSelector(
     (state) => state.postReducer
   );
-  
+
   useEffect(() => {
     dispatch(fetchUsers());
   }, []);
@@ -28,14 +28,15 @@ const Posts = () => {
       <div className={styles.posts}>
         {posts &&
           users &&
-          posts.map((post, index) => {
+          posts.map(({post, user}, index) => {
+
             return (
               <Post
                 key={index}
                 body={post.body}
                 id={post.id}
                 title={post.title}
-                user={users.filter((item) => item.id === post.userId)}
+                user={user}
                 comments={comments.filter((item) => item.postId === post.id)}
               />
             );

@@ -8,7 +8,7 @@ import { TComments, TUser } from "../../../../types/types";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import Comments from "./Comments/Comments";
 import { PostsSlice } from "../../../store/reducers/PostsSlice";
-import { fetchPostsDelete } from "../../../store/reducers/ActionCreater";
+import { fetchPostsDelete, fetchPostsPatching } from "../../../store/reducers/ActionCreater";
 
 export type TPost = {
   user: TUser[];
@@ -17,7 +17,7 @@ export type TPost = {
   title: string;
   comments: TComments[];
 };
-const Post: FC<TPost> = ({ title, body, id, user, comments }) => {
+const Post: FC<TPost> = ({ title, body, id, comments, user }) => {
   const dispatch = useAppDispatch();
   const { favorites } = useAppSelector((state) => state.postReducer);
   const { toggleFavorites } = PostsSlice.actions;
@@ -38,7 +38,6 @@ const Post: FC<TPost> = ({ title, body, id, user, comments }) => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.stopPropagation();
-    console.log(idChecked)
     idChecked.length > 0
       ? idChecked.map((item) => {
           dispatch(toggleFavorites(item));
@@ -51,14 +50,22 @@ const Post: FC<TPost> = ({ title, body, id, user, comments }) => {
   }, [favorites]);
 
   const isChecked = useMemo(() => {
-    console.log(idChecked);
     return idChecked.some((item) => item === id);
-  }, [idChecked, dispatch]);
+  }, [idChecked]);
 
   const deletePosts = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
     dispatch(fetchPostsDelete(idChecked));
   };
+
+  const editPost = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.stopPropagation();
+    e.preventDefault()
+    const titleInput = prompt(`Отредактируйте заголовок поста: ${title}`);
+    const bodyInput = prompt(`Отредактируйте описание поста: ${body}`);
+    const userInput = prompt(`Отредактируйте автора поста: ${name}`);
+    dispatch(fetchPostsPatching(titleInput!, userInput!, bodyInput! , id));
+  }
 
   return (
     <div
@@ -84,17 +91,29 @@ const Post: FC<TPost> = ({ title, body, id, user, comments }) => {
       <div className={styles.footer}>
         <p className={styles.userName}>{name}</p>
         <div className={styles.buttons}>
+          <button
+            className={
+              isChecked
+                ? `${styles.button} ${styles.btnDelete} ${styles.buttonActive}`
+                : `${styles.button} ${styles.btnDelete}`
+            }
+            onClick={(e) => deletePosts(e)}
+          >
+            <span className={styles.span}>Удалить</span>
+            <Delete strokeDefault="rgb(0 126 255)" />
+          </button>
+
           <button className={styles.button} onClick={(e) => openComments(e)}>
+            <span className={styles.span}>Комментарии</span>
             <DialogueIcon
               strokeDefault={
                 checkedComments ? "rgb(255 0 240)" : "rgb(0 126 255)"
               }
             />
           </button>
-          <button className={styles.button} onClick={(e) => deletePosts(e)}>
-            <Delete strokeDefault="rgb(0 126 255)" />
-          </button>
-          <button className={styles.button}>
+
+          <button className={styles.button} onClick={e => editPost(e)}>
+            <span className={styles.span}>Редактировать</span>
             <EditIcon strokeDefault="rgb(0 126 255)" />
           </button>
         </div>

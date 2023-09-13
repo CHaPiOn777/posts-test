@@ -26,7 +26,6 @@ const optionsGET = {
   }
 }
 const optionsPOST = (query:string) => {
-  console.log(query)
   return {
     method: "POST",
     mode: "cors",

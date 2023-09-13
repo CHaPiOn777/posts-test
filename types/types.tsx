@@ -12,6 +12,16 @@ export type TPost = {
   userId: number;
 };
 
+export type TPostsUser = {
+  post: TPost;
+  user: TUser[];
+}
+export type TPostEdit = {
+  body: string;
+  title: string;
+  userId: number;
+};
+
 export type TUser = {
   name: string;
   id: number;

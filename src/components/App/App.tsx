@@ -12,7 +12,7 @@ function App() {
     dispatch(fetchPosts());
   }, [dispatch]);
 
-
+  
 
   return (
     <Posts />
