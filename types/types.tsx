@@ -21,6 +21,6 @@ export type TComments = {
   body: string;
   email: string;
   name: string;
-  postId: string;
-  id: number;
+  postId?: number;
+  id?: number;
 };

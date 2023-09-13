@@ -1,28 +1,24 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styles from "./Posts.module.css";
-import { getPosts } from "../../api/api";
 import Post from "./Post/Post";
-import { TPost } from "../../../types/types";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { fetchComments, fetchPosts, fetchUsers } from "../../store/reducers/ActionCreater";
+import { fetchComments, fetchUsers } from "../../store/reducers/ActionCreater";
 import { Loader } from "../Loader/Loader";
 
 const Posts = () => {
   const dispatch = useAppDispatch();
-  const { comments } = useAppSelector(
-    (state) => state.commentsReducer
+  const { comments } = useAppSelector((state) => state.commentsReducer);
+  const { posts, isLoading, error } = useAppSelector(
+    (state) => state.postReducer
   );
+  
   useEffect(() => {
     dispatch(fetchUsers());
   }, []);
 
   useEffect(() => {
-
     dispatch(fetchComments());
   }, []);
-  const { posts, isLoading, error } = useAppSelector(
-    (state) => state.postReducer
-  );
 
   const { users } = useAppSelector((state) => state.usersReducer);
 
@@ -30,7 +26,8 @@ const Posts = () => {
     <Loader loader={isLoading}>
       {error && <h1 className={styles.error}>{error}</h1>}
       <div className={styles.posts}>
-        {posts && users &&
+        {posts &&
+          users &&
           posts.map((post, index) => {
             return (
               <Post
@@ -39,7 +36,7 @@ const Posts = () => {
                 id={post.id}
                 title={post.title}
                 user={users.filter((item) => item.id === post.userId)}
-                comments={comments.filter(item => item.postId === post.id)}
+                comments={comments.filter((item) => item.postId === post.id)}
               />
             );
           })}

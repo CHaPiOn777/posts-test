@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TComments } from "../../../types/types"
 
 type TCommentsState = {
-  comments: any;
+  comments: TComments[];
   isLoading: boolean;
   error: string;
 }
@@ -20,7 +20,7 @@ export const CommentsSlice = createSlice({
     commentsFetching(state) {
       state.isLoading = true;
     },
-    commentsFetchingSuccess(state, action: PayloadAction<any>) {
+    commentsFetchingSuccess(state, action: PayloadAction<TComments[]>) {
       state.isLoading = false;
       state.comments = action.payload;
       state.error = '';

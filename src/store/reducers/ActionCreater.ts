@@ -16,6 +16,19 @@ export const fetchPosts = () => async (dispatch: AppDispatch) => {
   }
 }
 
+export const fetchPostsDelete = (id: number[]) => async (dispatch: AppDispatch) => {
+  try {
+    dispatch(PostsSlice.actions.postsDelete());
+    id.forEach(async item => {
+      const res = await axios.delete<TPost[]>(`${baseURL}posts/1`);
+      dispatch(PostsSlice.actions.postsDeleteSuccess(item));
+    })
+
+  } catch (e) {
+    dispatch(PostsSlice.actions.postsDeleteError('Произошла ошибка при удалении постов'));
+  }
+}
+
 export const fetchUsers = () => async (dispatch: AppDispatch) => {
   try {
     dispatch(UsersSlice.actions.usersFetching());
