@@ -38,7 +38,7 @@ export const fetchPostsPatching = (title:string, userName: string, body: string,
   try {
     const post = {title, userName, body, id};
     dispatch(PostsSlice.actions.postsPatching());
-    // const res = await axios.patch<TPost>(`${baseURL}posts/1`, {body: {title, body}});
+    const res = await axios.patch<TPost>(`${baseURL}posts/1`, {body: {title, body}});
     dispatch(PostsSlice.actions.postsPatchingSuccess(post));
 
   } catch (e) {

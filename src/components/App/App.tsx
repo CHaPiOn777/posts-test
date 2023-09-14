@@ -1,9 +1,10 @@
-import Reac, {useEffect} from 'react';
-import './App.css';
-import { getPosts } from '../../api/api';
-import Posts from '../Posts/Posts';
-import { useAppDispatch } from '../../hooks/redux';
-import { fetchPosts, fetchUsers } from '../../store/reducers/ActionCreater';
+import Reac, { useEffect } from "react";
+import "./App.css";
+import { getPosts } from "../../api/api";
+import Posts from "../Posts/Posts";
+import { useAppDispatch } from "../../hooks/redux";
+import { fetchPosts, fetchUsers } from "../../store/reducers/ActionCreater";
+import Filters from "../Filters/Filters";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -12,10 +13,11 @@ function App() {
     dispatch(fetchPosts());
   }, [dispatch]);
 
-  
-
   return (
-    <Posts />
+    <>
+      <Filters></Filters>
+      <Posts />
+    </>
   );
 }
 

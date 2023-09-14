@@ -4,13 +4,15 @@ import { TPost, TUser } from "../../../types/types"
 type TUsersState = {
   users: TUser[];
   isLoading: boolean;
-  error: string
+  error: string,
+  user: string
 }
 
 const initialState: TUsersState = {
   users: [],
   isLoading: false,
-  error: '' 
+  error: '',
+  user: ''
 }
 
 export const UsersSlice = createSlice({
@@ -29,6 +31,9 @@ export const UsersSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
+    putUserName(state, action: PayloadAction<string>) {
+      state.user = action.payload;
+    }
   }
 })
 

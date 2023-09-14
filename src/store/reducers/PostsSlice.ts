@@ -6,7 +6,9 @@ type TPostState = {
   isLoading: boolean;
   error: string;
   favorites: number[];
+  isFavorites: boolean;
   idChecked: number[];
+  paramSort: string[]
 }
 
 const initialState: TPostState = {
@@ -15,6 +17,8 @@ const initialState: TPostState = {
   error: '',
   favorites: [],
   idChecked: [],
+  isFavorites: false,
+  paramSort: []
 }
 
 export const PostsSlice = createSlice({
@@ -44,6 +48,14 @@ export const PostsSlice = createSlice({
       }
     },
 
+    favoritesActive(state) {
+      state.isFavorites = !state.isFavorites
+    },
+
+    sortedPosts(state, action: PayloadAction<string[]>) {
+      state.paramSort = action.payload;
+    },
+
     addChecked(state, action: PayloadAction<number>) {
       if (state.idChecked.some(item => item === action.payload)) {
         state.idChecked = state.idChecked.filter(item => item !== action.payload)
@@ -51,7 +63,7 @@ export const PostsSlice = createSlice({
         state.idChecked.push(action.payload)
       }
     },
-    
+
     postsDelete(state) {
       state.isLoading = true;
       state.error = '';

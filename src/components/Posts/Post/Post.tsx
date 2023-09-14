@@ -47,7 +47,7 @@ const Post: FC<TPost> = ({ title, body, id, comments, user }) => {
 
   const activeFavorites = useMemo(() => {
     return favorites.some((item) => item === id);
-  }, [favorites]);
+  }, [favorites, dispatch]);
 
   const isChecked = useMemo(() => {
     return idChecked.some((item) => item === id);

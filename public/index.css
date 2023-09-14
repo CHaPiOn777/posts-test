@@ -11,8 +11,13 @@
 
 html,
 body {
+  padding: 10px;
   background-color: rgb(209 240 255);
+  margin: auto;
+  max-width: 1440px;
 }
+
+
 
 ::-webkit-scrollbar {
   border-radius: 3px;
