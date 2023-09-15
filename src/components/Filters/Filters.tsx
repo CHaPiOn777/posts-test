@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Filter.module.css";
 import { SearchIcon } from "../../images/icons/SearchIcon";
 import { useAppSelector } from "../../hooks/redux";
@@ -6,6 +6,7 @@ import { Arrow } from "../../images/icons/Arrow";
 import FilterIcon from "../../images/icons/FilterIcon";
 import Sorted from "./Sorted/Sorted";
 import Filtred from "./Filtred/Filtred";
+import DisplayItems from "./DisplayItems/DisplayItems";
 
 const Filters = () => {
 
@@ -25,6 +26,7 @@ const Filters = () => {
         </div>
         <div className={styles.container}>
           <Filtred />
+          <DisplayItems />
           <Sorted />
         </div>
       </form>

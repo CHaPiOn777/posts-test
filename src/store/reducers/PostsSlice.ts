@@ -8,7 +8,8 @@ type TPostState = {
   favorites: number[];
   isFavorites: boolean;
   idChecked: number[];
-  paramSort: string[]
+  paramSort: string[];
+  postsPage: string
 }
 
 const initialState: TPostState = {
@@ -18,7 +19,8 @@ const initialState: TPostState = {
   favorites: [],
   idChecked: [],
   isFavorites: false,
-  paramSort: []
+  paramSort: [],
+  postsPage: ''
 }
 
 export const PostsSlice = createSlice({
@@ -54,6 +56,10 @@ export const PostsSlice = createSlice({
 
     sortedPosts(state, action: PayloadAction<string[]>) {
       state.paramSort = action.payload;
+    },
+
+    setpostsPage(state, action: PayloadAction<string>) {
+      state.postsPage = action.payload;
     },
 
     addChecked(state, action: PayloadAction<number>) {

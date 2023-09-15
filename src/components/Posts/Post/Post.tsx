@@ -1,4 +1,4 @@
-import { useState, FC, useMemo } from "react";
+import { useState, FC, useMemo, useCallback } from "react";
 import styles from "./Post.module.css";
 import { FavoritesIcon } from "../../../images/icons/FavoritesIcon";
 import { DialogueIcon } from "../../../images/icons/DialogueIcon";
@@ -34,7 +34,7 @@ const Post: FC<TPost> = ({ title, body, id, comments, user }) => {
     setCheckedComments(!checkedComments);
   };
 
-  const favoriteClick = (
+  const favoriteClick = useCallback((
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.stopPropagation();
@@ -43,7 +43,7 @@ const Post: FC<TPost> = ({ title, body, id, comments, user }) => {
           dispatch(toggleFavorites(item));
         })
       : dispatch(toggleFavorites(id));
-  };
+  },[id, idChecked]);
 
   const activeFavorites = useMemo(() => {
     return favorites.some((item) => item === id);

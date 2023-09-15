@@ -9,6 +9,7 @@ const Filtred = () => {
   const dispatch = useAppDispatch();
   const { users } = useAppSelector((state) => state.usersReducer);
   const [userName, setUserName] = useState<string>("All");
+  const [active, setActive] = useState<boolean>(false);
   const { putUserName } = UsersSlice.actions;
   const { favoritesActive } = PostsSlice.actions;
 
@@ -22,7 +23,8 @@ const Filtred = () => {
 
   const onClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    dispatch(favoritesActive())
+    dispatch(favoritesActive());
+    setActive(!active);
   };
 
   return (
@@ -45,7 +47,7 @@ const Filtred = () => {
             ))}
         </select>
       </div>
-      <button className={styles.btnFavorites} onClick={(e) => onClick(e)}>
+      <button className={active ? `${styles.btnFavorites} ${styles.btnFavoritesActive}` : styles.btnFavorites} onClick={(e) => onClick(e)}>
         All favorites...
       </button>
     </div>
