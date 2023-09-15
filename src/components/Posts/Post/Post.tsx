@@ -1,4 +1,4 @@
-import { useState, FC, useMemo, useCallback } from "react";
+import { useState, FC, useMemo, useCallback, SetStateAction } from "react";
 import styles from "./Post.module.css";
 import { FavoritesIcon } from "../../../images/icons/FavoritesIcon";
 import { DialogueIcon } from "../../../images/icons/DialogueIcon";
@@ -8,7 +8,11 @@ import { TComments, TUser } from "../../../../types/types";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import Comments from "./Comments/Comments";
 import { PostsSlice } from "../../../store/reducers/PostsSlice";
-import { fetchPostsDelete, fetchPostsPatching } from "../../../store/reducers/ActionCreater";
+import {
+  fetchPostsDelete,
+  fetchPostsPatching,
+} from "../../../store/reducers/ActionCreater";
+import Modal from "../../Modal/Modal";
 
 export type TPost = {
   user: TUser[];
@@ -23,6 +27,8 @@ const Post: FC<TPost> = ({ title, body, id, comments, user }) => {
   const { toggleFavorites } = PostsSlice.actions;
   const { idChecked } = useAppSelector((state) => state.postReducer);
   const { addChecked } = PostsSlice.actions;
+  const [activePopup, setActivePopup] = useState<boolean>(false);
+  const [textPopup, setTextPopup] = useState<string>("");
 
   const [checkedComments, setCheckedComments] = useState<boolean>(false);
   const { name } = user[0];
@@ -34,16 +40,17 @@ const Post: FC<TPost> = ({ title, body, id, comments, user }) => {
     setCheckedComments(!checkedComments);
   };
 
-  const favoriteClick = useCallback((
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.stopPropagation();
-    idChecked.length > 0
-      ? idChecked.map((item) => {
-          dispatch(toggleFavorites(item));
-        })
-      : dispatch(toggleFavorites(id));
-  },[id, idChecked]);
+  const favoriteClick = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e.stopPropagation();
+      idChecked.length > 0
+        ? idChecked.map((item) => {
+            dispatch(toggleFavorites(item));
+          })
+        : dispatch(toggleFavorites(id));
+    },
+    [id, idChecked]
+  );
 
   const activeFavorites = useMemo(() => {
     return favorites.some((item) => item === id);
@@ -55,17 +62,18 @@ const Post: FC<TPost> = ({ title, body, id, comments, user }) => {
 
   const deletePosts = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
-    dispatch(fetchPostsDelete(idChecked));
+    setTextPopup("Are you sure you want to delete the selected items?");
+    setActivePopup(true);
   };
 
   const editPost = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
-    e.preventDefault()
-    const titleInput = prompt(`Отредактируйте заголовок поста: ${title}`);
-    const bodyInput = prompt(`Отредактируйте описание поста: ${body}`);
-    const userInput = prompt(`Отредактируйте автора поста: ${name}`);
-    dispatch(fetchPostsPatching(titleInput!, userInput!, bodyInput! , id));
-  }
+    e.preventDefault();
+    const titleInput = prompt(`Edit the post title: ${title}`);
+    const bodyInput = prompt(`Edit post description: ${body}`);
+    const userInput = prompt(`Edit the author of the post: ${name}`);
+    dispatch(fetchPostsPatching(titleInput!, userInput!, bodyInput!, id));
+  };
 
   return (
     <div
@@ -74,6 +82,26 @@ const Post: FC<TPost> = ({ title, body, id, comments, user }) => {
       }
       onClick={() => dispatch(addChecked(id))}
     >
+      <Modal active={activePopup} setActive={setActivePopup}>
+        <h3 className={styles.text}>{textPopup}</h3>
+        <div className={styles.btns}>
+          <button
+            className={`${styles.btn} mt-7 mr-5`}
+            onClick={() => {
+              dispatch(fetchPostsDelete(idChecked));
+              setActivePopup(false);
+            }}
+          >
+            Yes
+          </button>
+          <button
+            className={`${styles.btn} mt-7 mr-5`}
+            onClick={() => setActivePopup(false)}
+          >
+            No
+          </button>
+        </div>
+      </Modal>
       <h1 className={styles.title}>{title}</h1>
       <button
         className={
@@ -112,7 +140,7 @@ const Post: FC<TPost> = ({ title, body, id, comments, user }) => {
             />
           </button>
 
-          <button className={styles.button} onClick={e => editPost(e)}>
+          <button className={styles.button} onClick={(e) => editPost(e)}>
             <span className={styles.span}>Редактировать</span>
             <EditIcon strokeDefault="rgb(0 126 255)" />
           </button>

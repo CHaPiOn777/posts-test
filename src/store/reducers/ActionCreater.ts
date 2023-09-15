@@ -42,7 +42,7 @@ export const fetchPostsPatching = (title:string, userName: string, body: string,
     dispatch(PostsSlice.actions.postsPatchingSuccess(post));
 
   } catch (e) {
-    dispatch(PostsSlice.actions.postsPatchingError('Произошла ошибка при удалении постов'));
+    dispatch(PostsSlice.actions.postsPatchingError('Произошла ошибка при редактировании постов'));
   }
 }
 
@@ -62,6 +62,6 @@ export const fetchComments = () => async (dispatch: AppDispatch) => {
     const res = await axios.get<TComments[]>(`${baseURL}comments`);
     dispatch(CommentsSlice.actions.commentsFetchingSuccess(res.data));
   } catch (e) {
-    dispatch(CommentsSlice.actions.commentsFetchingError('Произошла ошибка при загрузке пользователей'));
+    dispatch(CommentsSlice.actions.commentsFetchingError('Произошла ошибка при загрузке комментариев'));
   }
 }
