@@ -49,7 +49,7 @@ const EditModal: FC<TEditModal> = ({ setActive, id }) => {
         </button>
         <button
           className={`${styles.btn} mt-7 mr-5`}
-          onClick={() => setActive(false)}
+          onClick={(e) => {setActive(false); e.preventDefault()}}
         >
           Close
         </button>

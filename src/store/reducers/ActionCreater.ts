@@ -1,10 +1,11 @@
 import axios from "axios";
 import { AppDispatch } from "../store";
 import { TComments, TPost, TUser } from "../../../types/types";
-import { baseURL } from "../../api/api";
 import { PostsSlice } from "./PostsSlice";
 import { UsersSlice } from "./UsersSlice";
 import { CommentsSlice } from "./CommentsSlice";
+
+export const baseURL = `https://jsonplaceholder.typicode.com/`;
 
 export const fetchPosts = () => async (dispatch: AppDispatch) => {
   try {

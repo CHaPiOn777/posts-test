@@ -9,7 +9,6 @@
   display: grid;
   grid-template-columns: 1fr 40px;
   align-content: space-between;
-  overflow-y: scroll;
   gap: 15px;
   cursor: pointer;
   grid-template-areas:
