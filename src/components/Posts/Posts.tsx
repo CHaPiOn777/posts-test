@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useMemo, useState } from "react";
+import { SetStateAction, useCallback, useEffect, useMemo, useState } from "react";
 import styles from "./Posts.module.css";
 import Post from "./Post/Post";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
@@ -11,79 +11,82 @@ const Posts = () => {
   const { comments } = useAppSelector((state) => state.commentsReducer);
   const { user } = useAppSelector((state) => state.usersReducer);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const {
-    favorites,
-    isFavorites,
-    paramSort,
-    postsPage,
-    posts,
-    isLoading,
-    error,
-    valueInput,
-  } = useAppSelector((state) => state.postReducer);
+  const { postsPage } = useAppSelector((state) => state.postReducer);
 
-  let postsFilter = useMemo(() => {
+  const { favorites, isFavorites, paramSort } = useAppSelector(
+    (state) => state.postReducer
+  );
+  const { posts, isLoading, error } = useAppSelector(
+    (state) => state.postReducer
+  );
+
+  // const [allPosts, setAllPosts] = useState<any[]>(posts);
+
+  const postsFilter = useMemo(() => {
     if (isFavorites === true) {
-      const favoritesFilter = favorites.map((favorite) => {
+      const a = favorites.map((favorite) => {
         return posts.filter((post) => post.post.id === favorite);
       });
-      return favoritesFilter.flat();
+      return a.flat();
     }
     if (user === "All") return posts;
     return posts.filter((post) => post.user[0].name === user);
   }, [user, posts, favorites, isFavorites, paramSort]);
 
-  postsFilter = useMemo(
-    () =>
-      postsFilter.filter((post) => {
-        return post.post.title
-          .toLocaleLowerCase()
-          .includes(valueInput.toLocaleLowerCase());
-      }),
-    [valueInput, postsFilter]
-  );
+  const postsPageNew = useMemo(() => {
+    return postsPage === "All" ? postsFilter.length : postsPage;
+  }, [postsPage]);
 
-  useEffect(() => {
-    const [param, ascending] = paramSort;
+  const lastPostPages = currentPage * Number(postsPageNew);
+  const firstPostPages = lastPostPages - Number(postsPageNew);
+  const currentPost = postsFilter.slice(firstPostPages, lastPostPages);
 
-    if (param === "ID Card") {
-      if (ascending === "Ascending") {
-        postsFilter.sort((a, b) => {
-          return b.post.id - a.post.id;
-        });
-      } else {
-        postsFilter.sort((a, b) => {
-          return a.post.id - b.post.id;
-        });
-      }
-    }
+  const paginate = (currentPage: SetStateAction<number>) => setCurrentPage(currentPage)
 
-    if (param === "User Name") {
-      if (ascending === "Ascending") {
-        postsFilter.sort((a, b) => {
-          if (b.user[0].name > a.user[0].name) return -1;
-          if (b.user[0].name < a.user[0].name) return 1;
-          return 0;
-        });
-      } else {
-        postsFilter.sort((a, b) => {
-          if (b.user[0].name > a.user[0].name) return 1;
-          if (b.user[0].name < a.user[0].name) return -1;
-          return 0;
-        });
-      }
-    }
-  }, [postsFilter, paramSort]);
+  // let copy = [...allPosts];
 
-  const lastPostPages = currentPage * Number(postsPage);
-  const firstPostPages = lastPostPages - Number(postsPage);
+  // const sortedPosts = useCallback(() => {
+  //   const [w, e] = paramSort;
 
-  const currentPost = useMemo(() => {
-    return postsFilter.slice(firstPostPages, lastPostPages);
-  }, [postsFilter, firstPostPages, lastPostPages, paramSort]);
+  //   // debugger
+  //   // postsFilter.sort()
+  //   console.log(w === "User Name")
+  //   if (w === "User Name") {
+  //     if (e === "Ascending") {
+  //       copy.sort((a, b) => {
+  //         if (a.user[0].name > b.user[0].name) {
+  //           return 1;
+  //         }
+  //         if (a.user[0].name < b.user[0].name) {
+  //           return -1;
+  //         }
+  //         return 0;
+  //         // return 0;
+  //       });
 
-  const paginate = (currentPage: SetStateAction<number>) =>
-    setCurrentPage(currentPage);
+  //     } else {
+
+  //       copy.sort((a, b) => {
+  //         if (a.user[0].name < b.user[0].name) {
+  //           return 1;
+  //         }
+  //         if (a.user[0].name > b.user[0].name) {
+  //           return -1;
+  //         }
+  //         return 0;
+  //       });
+  //     }
+  //   }
+  //   return setAllPosts(copy);
+
+  // }, [copy])
+  // useEffect(() => {
+  //   sortedPosts()
+  // }, [paramSort, sortedPosts]);
+
+  // useEffect(() => {
+  //   setPostsqwe(copy);
+  // }, [copy]);
 
   useEffect(() => {
     dispatch(fetchUsers());
@@ -110,7 +113,7 @@ const Posts = () => {
             );
           })}
       </div>
-      <Pagination totalPosts={postsFilter.length} paginate={paginate} />
+      <Pagination totalPosts={posts.length} paginate={paginate} />
     </Loader>
   );
 };

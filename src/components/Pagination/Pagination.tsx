@@ -1,4 +1,4 @@
-import { FC, SetStateAction, useState } from "react";
+import React, { FC, SetStateAction, useEffect, useState } from "react";
 import { useAppSelector } from "../../hooks/redux";
 import styles from "./Pagination.module.css";
 
@@ -16,7 +16,7 @@ const Pagination: FC<TTotalPosts> = ({ totalPosts, paginate }) => {
     pageNumbers.push(i);
   }
 
-  const onClick = (index: number, number: number) => {
+  const onClick = (index: number, number: number, ) => {
     paginate(number);
     setActiveIndex(index);
   };
@@ -24,15 +24,15 @@ const Pagination: FC<TTotalPosts> = ({ totalPosts, paginate }) => {
   return (
     <ul className={styles.pagination}>
       {pageNumbers.map((number, index) => (
-        <li className={styles.pageItem} key={index}>
+        <li className={styles.pageItem}>
           <a
-            href="#"
+            href="!#"
             className={
               activeIndex === index
                 ? `${styles.pageLink} ${styles.pageLinkActive}`
                 : styles.pageLink
             }
-            onClick={(e) => onClick(index, number)}
+            onClick={() => onClick(index, number)}
           >
             {number}
           </a>

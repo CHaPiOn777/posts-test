@@ -9,8 +9,7 @@ type TPostState = {
   isFavorites: boolean;
   idChecked: number[];
   paramSort: string[];
-  postsPage: string;
-  valueInput: string;
+  postsPage: string
 }
 
 const initialState: TPostState = {
@@ -21,8 +20,7 @@ const initialState: TPostState = {
   idChecked: [],
   isFavorites: false,
   paramSort: [],
-  postsPage: '',
-  valueInput: ''
+  postsPage: ''
 }
 
 export const PostsSlice = createSlice({
@@ -62,10 +60,6 @@ export const PostsSlice = createSlice({
 
     setpostsPage(state, action: PayloadAction<string>) {
       state.postsPage = action.payload;
-    },
-    
-    setValueUnput(state, action: PayloadAction<string>) {
-      state.valueInput = action.payload;
     },
 
     addChecked(state, action: PayloadAction<number>) {

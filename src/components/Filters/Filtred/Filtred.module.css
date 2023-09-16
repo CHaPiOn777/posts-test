@@ -11,10 +11,6 @@
   border-bottom: 2px solid #0000004d;
   cursor: pointer;
   background-color: transparent;
-  transition: all .3s;
-}
-.select:hover {
-  opacity: .5;
 }
 
 .selectContainer {
@@ -51,13 +47,9 @@
   font-size: 1rem;
   font-weight: 600;
   padding: 15px;
-  transition: all .3s;
 }
 .btnFavoritesActive {
   color: #007eff
-}
-.btnFavorites:hover {
-  opacity: .5;
 }
 
 .filterIcon {

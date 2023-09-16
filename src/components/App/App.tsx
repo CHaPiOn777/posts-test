@@ -1,8 +1,9 @@
-import { useEffect } from "react";
+import Reac, { useEffect } from "react";
 import "./App.css";
+import { getPosts } from "../../api/api";
 import Posts from "../Posts/Posts";
 import { useAppDispatch } from "../../hooks/redux";
-import { fetchPosts } from "../../store/reducers/ActionCreater";
+import { fetchPosts, fetchUsers } from "../../store/reducers/ActionCreater";
 import Filters from "../Filters/Filters";
 
 function App() {
@@ -14,7 +15,7 @@ function App() {
 
   return (
     <>
-      <Filters />
+      <Filters></Filters>
       <Posts />
     </>
   );
