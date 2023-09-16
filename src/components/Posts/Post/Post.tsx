@@ -1,4 +1,4 @@
-import { useState, FC, useMemo, useCallback, SetStateAction } from "react";
+import { useState, FC, useMemo, useCallback } from "react";
 import styles from "./Post.module.css";
 import { FavoritesIcon } from "../../../images/icons/FavoritesIcon";
 import { DialogueIcon } from "../../../images/icons/DialogueIcon";
@@ -8,11 +8,9 @@ import { TComments, TUser } from "../../../../types/types";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import Comments from "./Comments/Comments";
 import { PostsSlice } from "../../../store/reducers/PostsSlice";
-import {
-  fetchPostsDelete,
-  fetchPostsPatching,
-} from "../../../store/reducers/ActionCreater";
 import Modal from "../../Modal/Modal";
+import DeletePostsModal from "../../Modal/DeletePostsModal/DeletePostsModal";
+import EditModal from "../../Modal/EditModal/EditModal";
 
 export type TPost = {
   user: TUser[];
@@ -29,6 +27,7 @@ const Post: FC<TPost> = ({ title, body, id, comments, user }) => {
   const { addChecked } = PostsSlice.actions;
   const [activePopup, setActivePopup] = useState<boolean>(false);
   const [textPopup, setTextPopup] = useState<string>("");
+  const [modalName, setModalName] = useState<string>("");
 
   const [checkedComments, setCheckedComments] = useState<boolean>(false);
   const { name } = user[0];
@@ -49,12 +48,12 @@ const Post: FC<TPost> = ({ title, body, id, comments, user }) => {
           })
         : dispatch(toggleFavorites(id));
     },
-    [id, idChecked]
+    [id, idChecked, dispatch]
   );
 
   const activeFavorites = useMemo(() => {
     return favorites.some((item) => item === id);
-  }, [favorites, dispatch]);
+  }, [favorites, dispatch, id]);
 
   const isChecked = useMemo(() => {
     return idChecked.some((item) => item === id);
@@ -62,6 +61,7 @@ const Post: FC<TPost> = ({ title, body, id, comments, user }) => {
 
   const deletePosts = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
+    setModalName("delete");
     setTextPopup("Are you sure you want to delete the selected items?");
     setActivePopup(true);
   };
@@ -69,10 +69,8 @@ const Post: FC<TPost> = ({ title, body, id, comments, user }) => {
   const editPost = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
     e.preventDefault();
-    const titleInput = prompt(`Edit the post title: ${title}`);
-    const bodyInput = prompt(`Edit post description: ${body}`);
-    const userInput = prompt(`Edit the author of the post: ${name}`);
-    dispatch(fetchPostsPatching(titleInput!, userInput!, bodyInput!, id));
+    setModalName("edit");
+    setActivePopup(true);
   };
 
   return (
@@ -83,24 +81,11 @@ const Post: FC<TPost> = ({ title, body, id, comments, user }) => {
       onClick={() => dispatch(addChecked(id))}
     >
       <Modal active={activePopup} setActive={setActivePopup}>
-        <h3 className={styles.text}>{textPopup}</h3>
-        <div className={styles.btns}>
-          <button
-            className={`${styles.btn} mt-7 mr-5`}
-            onClick={() => {
-              dispatch(fetchPostsDelete(idChecked));
-              setActivePopup(false);
-            }}
-          >
-            Yes
-          </button>
-          <button
-            className={`${styles.btn} mt-7 mr-5`}
-            onClick={() => setActivePopup(false)}
-          >
-            No
-          </button>
-        </div>
+        {modalName === "delete" ? (
+          <DeletePostsModal textPopup={textPopup} setActive={setActivePopup} />
+        ) : (
+          <EditModal setActive={setActivePopup} id={id}></EditModal>
+        )}
       </Modal>
       <h1 className={styles.title}>{title}</h1>
       <button

@@ -1,30 +1,35 @@
-import React, { useEffect, useState } from "react";
-import styles from './DisplayItems.module.css';
+import { useEffect, useState } from "react";
+import styles from "./DisplayItems.module.css";
 import { useAppDispatch } from "../../../hooks/redux";
 import { PostsSlice } from "../../../store/reducers/PostsSlice";
 
 const DisplayItems = () => {
   const dispatch = useAppDispatch();
   const { setpostsPage } = PostsSlice.actions;
-  const [counterPerPages, setCounterPerPages] = useState<string>('10');
+  const counter = localStorage.getItem("counterPerPages");
+  const [counterPerPages, setCounterPerPages] = useState<string>(
+    counter || "10"
+  );
+  const arrValues = ["10", "20", "50", "100"];
+  localStorage.setItem("counterPerPages", counterPerPages);
 
   useEffect(() => {
-    dispatch(setpostsPage(counterPerPages))
-  }, [counterPerPages])
-
+    dispatch(setpostsPage(counterPerPages));
+  }, [counterPerPages]);
 
   return (
     <div className={styles.selectContainer}>
       <p>Display items</p>
       <select
+        value={counter || "10"}
         className={styles.select}
         onChange={(e) => setCounterPerPages(e.target.value)}
       >
-        <option value="10">10</option>
-        <option value="20">20</option>
-        <option value="50">50</option>
-        <option value="100">100</option>
-        <option value="All">All</option>
+        {arrValues.map((item, index) => (
+          <option value={item} key={index}>
+            {item}
+          </option>
+        ))}
       </select>
     </div>
   );

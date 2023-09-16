@@ -28,7 +28,6 @@ export type TUser = {
 };
 
 export type TComments = {
-  [x: string]: any;
   body: string;
   email: string;
   name: string;

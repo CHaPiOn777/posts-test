@@ -1,14 +1,14 @@
-import React, { useState } from "react";
 import styles from "./Filter.module.css";
 import { SearchIcon } from "../../images/icons/SearchIcon";
-import { useAppSelector } from "../../hooks/redux";
-import { Arrow } from "../../images/icons/Arrow";
-import FilterIcon from "../../images/icons/FilterIcon";
+import { useAppDispatch } from "../../hooks/redux";
 import Sorted from "./Sorted/Sorted";
 import Filtred from "./Filtred/Filtred";
 import DisplayItems from "./DisplayItems/DisplayItems";
+import { PostsSlice } from "../../store/reducers/PostsSlice";
 
 const Filters = () => {
+  const dispatch = useAppDispatch();
+  const { setValueUnput } = PostsSlice.actions;
 
   return (
     <div className={styles.containerFilter}>
@@ -21,7 +21,8 @@ const Filters = () => {
           </i>
           <input
             className={styles.input}
-            placeholder={"Поиск по названию поста..."}
+            placeholder={"Search by post title..."}
+            onChange={(e) => dispatch(setValueUnput(e.target.value))}
           />
         </div>
         <div className={styles.container}>

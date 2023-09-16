@@ -1,6 +1,6 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Sorted.module.css";
-import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import { useAppDispatch } from "../../../hooks/redux";
 import { PostsSlice } from "../../../store/reducers/PostsSlice";
 
 const Sorted = () => {
@@ -21,14 +21,13 @@ const Sorted = () => {
       >
         <option value="ID Card">ID Card</option>
         <option value="User Name">User Name</option>
-        <option value="Favorites">Favorites</option>
       </select>
       <select
         className={styles.select}
         onChange={(e) => setAscending(e.target.value)}
       >
-        <option value="По возрастанию">Ascending</option>
-        <option value="По убыванию">Descending</option>
+        <option value="Ascending">Ascending</option>
+        <option value="Descending">Descending</option>
       </select>
     </div>
   );

@@ -1,7 +1,6 @@
-import React, { useEffect, useState, ChangeEvent, MouseEvent } from "react";
+import React, { useEffect, useState, ChangeEvent } from "react";
 import styles from "./Filtred.module.css";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-import { Arrow } from "../../../images/icons/Arrow";
 import { PostsSlice } from "../../../store/reducers/PostsSlice";
 import { UsersSlice } from "../../../store/reducers/UsersSlice";
 
