@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { TPost, TUser } from "../../../types/types"
+import { TUser } from "../../../types/types"
 
 type TUsersState = {
   users: TUser[];
