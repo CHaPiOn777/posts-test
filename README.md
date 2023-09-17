@@ -14,4 +14,4 @@
 ## Стек технологий:
 React, redax-toolkit, typescript, axios
 
-* [Ссылка на работу](https://chapion777.github.io/posts-test/)
+* [Ссылка на работу](https://chapion777.github.io/posts-test/public/)
