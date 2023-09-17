@@ -8,14 +8,16 @@ const Sorted = () => {
   const { sortedPosts } = PostsSlice.actions;
   const [params, setParams] = useState<string>("ID Card");
   const [ascending, setAscending] = useState<string>("Ascending");
+  const counter = localStorage.getItem("counterPerPages");
 
   useEffect(() => {
     dispatch(sortedPosts([params, ascending]));
-  }, [params, ascending]);
+  }, [params, ascending, counter]);
 
   return (
     <div className={styles.sortedContainer}>
       <select
+        value={params}
         className={styles.select}
         onChange={(e) => setParams(e.target.value)}
       >
@@ -24,6 +26,7 @@ const Sorted = () => {
       </select>
       <select
         className={styles.select}
+        value={ascending}
         onChange={(e) => setAscending(e.target.value)}
       >
         <option value="Ascending">Ascending</option>

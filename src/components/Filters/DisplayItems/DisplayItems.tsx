@@ -21,7 +21,7 @@ const DisplayItems = () => {
     <div className={styles.selectContainer}>
       <p>Display items</p>
       <select
-        value={counter || "10"}
+        value={counterPerPages || "10"}
         className={styles.select}
         onChange={(e) => setCounterPerPages(e.target.value)}
       >
