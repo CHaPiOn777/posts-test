@@ -10,6 +10,8 @@ const Posts = () => {
   const dispatch = useAppDispatch();
   const { comments } = useAppSelector((state) => state.commentsReducer);
   const { user } = useAppSelector((state) => state.usersReducer);
+  const counter = localStorage.getItem("counterPerPages");
+
   const [currentPage, setCurrentPage] = useState<number>(1);
   const {
     favorites,
@@ -31,7 +33,7 @@ const Posts = () => {
     }
     if (user === "All") return posts;
     return posts.filter((post) => post.user[0].name === user);
-  }, [user, posts, favorites, isFavorites, paramSort]);
+  }, [user, posts, favorites, isFavorites, paramSort, counter]);
 
   postsFilter = useMemo(
     () =>
@@ -40,7 +42,7 @@ const Posts = () => {
           .toLocaleLowerCase()
           .includes(valueInput.toLocaleLowerCase());
       }),
-    [valueInput, postsFilter]
+    [valueInput, postsFilter, counter]
   );
 
   useEffect(() => {
@@ -74,7 +76,7 @@ const Posts = () => {
         });
       }
     }
-  }, [postsFilter, paramSort]);
+  }, [postsFilter, paramSort, counter]);
 
   const lastPostPages = currentPage * Number(postsPage);
   const firstPostPages = lastPostPages - Number(postsPage);

@@ -15,7 +15,7 @@ const DisplayItems = () => {
 
   useEffect(() => {
     dispatch(setpostsPage(counterPerPages));
-  }, [counterPerPages]);
+  }, [counterPerPages, counter]);
 
   return (
     <div className={styles.selectContainer}>
