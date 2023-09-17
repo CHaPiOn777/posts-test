@@ -1,8 +1,8 @@
 {
   "name": "posts-test",
   "version": "0.1.0",
-  "private": true,
-  "homepage": "https://chapion777.github.io/posts-test/public/",
+  "private": false,
+  "homepage": "https://chapion777.github.io/posts-test/",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^5.17.0",
